@@ -389,13 +389,6 @@
                     "type": "bytes",
                     "name": "public_key",
                     "id": 2
-                },
-                {
-                    "rule": "optional",
-                    "options": {},
-                    "type": "string",
-                    "name": "json",
-                    "id": 3
                 }
             ],
             "enums": [],
@@ -2355,7 +2348,22 @@
         },
         {
             "name": "DebugLinkGetState",
-            "fields": [],
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "bool",
+                    "name": "wait_word_list",
+                    "id": 1
+                },
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "bool",
+                    "name": "wait_word_pos",
+                    "id": 2
+                }
+            ],
             "enums": [],
             "messages": [],
             "options": {},
