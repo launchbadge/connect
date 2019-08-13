@@ -23,7 +23,7 @@ TrezorConnect.eosSignTransaction(params).then(function(result) {
 ### Example
 ```javascript
 TrezorConnect.eosSignTransaction({
-    path: "m/44'/60'/0'",
+    path: "m/44'/194'/0'/0/0",
     transaction: {
         chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
         header: {
