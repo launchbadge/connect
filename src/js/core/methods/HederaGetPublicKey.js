@@ -9,9 +9,9 @@ import { validatePath, fromHardened, getSerializedPath } from '../../utils/pathU
 import * as UI from '../../constants/ui';
 import { UiMessage } from '../../message/builder';
 
-import type { LiskPublicKey } from '../../types/trezor';
+import type { HederaPublicKey } from '../../types/trezor';
 import type { CoreMessage, UiPromiseResponse } from '../../types';
-import type { LiskPublicKey as LiskPublicKeyResponse } from '../../types/lisk';
+import type { HederaPublicKey as HederaPublicKeyResponse } from '../../types/hedera';
 
 type Batch = {
     path: Array<number>,
@@ -20,7 +20,7 @@ type Batch = {
 
 type Params = Array<Batch>;
 
-export default class LiskGetPublicKey extends AbstractMethod {
+export default class HederaGetPublicKey extends AbstractMethod {
     params: Params;
     hasBundle: boolean;
     confirmed: boolean = false;
@@ -28,9 +28,11 @@ export default class LiskGetPublicKey extends AbstractMethod {
     constructor(message: CoreMessage) {
         super(message);
 
+        debugger;
+
         this.requiredPermissions = ['read'];
-        this.firmwareRange = getFirmwareRange(this.name, getMiscNetwork('Lisk'), this.firmwareRange);
-        this.info = 'Export Lisk public key';
+        this.firmwareRange = getFirmwareRange(this.name, getMiscNetwork('Hedera'), this.firmwareRange);
+        this.info = 'Export Hedera public key';
 
         // create a bundle with only one batch if bundle doesn't exists
         this.hasBundle = message.payload.hasOwnProperty('bundle');
@@ -73,9 +75,9 @@ export default class LiskGetPublicKey extends AbstractMethod {
 
         let label: string;
         if (this.params.length > 1) {
-            label = 'Export multiple Lisk public keys';
+            label = 'Export multiple Hedera public keys';
         } else {
-            label = `Export Lisk public key for account #${ (fromHardened(this.params[0].path[2]) + 1) }`;
+            label = `Export Hedera public key for account #${ (fromHardened(this.params[0].path[2]) + 1) }`;
         }
 
         // request confirmation view
@@ -91,11 +93,12 @@ export default class LiskGetPublicKey extends AbstractMethod {
         return this.confirmed;
     }
 
-    async run(): Promise<LiskPublicKeyResponse | Array<LiskPublicKeyResponse>> {
-        const responses: Array<LiskPublicKeyResponse> = [];
+    async run(): Promise<HederaPublicKeyResponse | Array<HederaPublicKeyResponse>> {
+        const responses: Array<HederaPublicKeyResponse> = [];
+
         for (let i = 0; i < this.params.length; i++) {
             const batch: Batch = this.params[i];
-            const response: LiskPublicKey = await this.device.getCommands().hederaGetPublicKey(
+            const response: HederaPublicKey = await this.device.getCommands().hederaGetPublicKey(
                 batch.path,
                 batch.showOnTrezor
             );
